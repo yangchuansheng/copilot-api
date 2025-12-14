@@ -1,3 +1,4 @@
+import consola from "consola"
 import { Hono } from "hono"
 import { cors } from "hono/cors"
 import { logger } from "hono/logger"
@@ -12,7 +13,12 @@ import { usageRoute } from "./routes/usage/route"
 
 export const server = new Hono()
 
-server.use(logger())
+server.use(
+  logger((line, ...rest) => {
+    const message = [line, ...rest].filter(Boolean).join(" ")
+    consola.info(message)
+  }),
+)
 server.use(cors())
 
 server.get("/", (c) => c.text("Server running"))
