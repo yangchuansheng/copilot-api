@@ -1,0 +1,193 @@
+{
+  "name": "copilot-api-vscode",
+  "displayName": "Copilot API (Embedded)",
+  "version": "0.1.0",
+  "description": "Run copilot-api inside VS Code without requiring Bun or a separate Node install.",
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "copilot",
+    "llm"
+  ],
+  "homepage": "https://github.com/ericc-ch/copilot-api",
+  "bugs": {
+    "url": "https://github.com/ericc-ch/copilot-api/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ericc-ch/copilot-api.git"
+  },
+  "license": "MIT",
+  "publisher": "local",
+  "type": "module",
+  "main": "./dist/extension.js",
+  "files": [
+    "dist/**",
+    "media/**",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "bun scripts/build.ts",
+    "build:debug": "bun scripts/build.ts --debug",
+    "package": "bunx vsce package"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "copilotApi.start",
+        "title": "Copilot API: Start Server"
+      },
+      {
+        "command": "copilotApi.stop",
+        "title": "Copilot API: Stop Server"
+      },
+      {
+        "command": "copilotApi.restart",
+        "title": "Copilot API: Restart Server"
+      },
+      {
+        "command": "copilotApi.copyEndpoint",
+        "title": "Copilot API: Copy Endpoint"
+      },
+      {
+        "command": "copilotApi.copyMcpEndpoint",
+        "title": "Copilot API: Copy MCP Endpoint"
+      },
+      {
+        "command": "copilotApi.openUsageViewer",
+        "title": "Copilot API: Open Usage Viewer"
+      },
+      {
+        "command": "copilotApi.mcpQuestions.open",
+        "title": "Copilot API: Open MCP Questions"
+      },
+      {
+        "command": "copilotApi.mcpQuestions.answerNext",
+        "title": "Copilot API: Answer Next MCP Question"
+      },
+      {
+        "command": "copilotApi.mcpQuestions.clearHistory",
+        "title": "Copilot API: Clear MCP Question History"
+      },
+      {
+        "command": "copilotApi.mcpQuestions.openPanel",
+        "title": "Copilot API: Open MCP Questions (Editor)"
+      }
+    ],
+    "configuration": {
+      "title": "Copilot API",
+      "properties": {
+        "copilotApi.port": {
+          "type": "number",
+          "default": 4141,
+          "minimum": 1,
+          "maximum": 65535,
+          "description": "Port to listen on (localhost only)."
+        },
+        "copilotApi.verbose": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable verbose logging."
+        },
+        "copilotApi.accountType": {
+          "type": "string",
+          "enum": [
+            "individual",
+            "business",
+            "enterprise"
+          ],
+          "default": "individual",
+          "description": "GitHub account type (Copilot plan routing)."
+        },
+        "copilotApi.rateLimitSeconds": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "default": null,
+          "minimum": 1,
+          "description": "Minimum seconds between requests (optional)."
+        },
+        "copilotApi.rateLimitWait": {
+          "type": "boolean",
+          "default": false,
+          "description": "Wait instead of error when rate limit is hit."
+        },
+        "copilotApi.proxyEnv": {
+          "type": "boolean",
+          "default": false,
+          "description": "Initialize proxy from environment variables (HTTP(S)_PROXY, etc)."
+        },
+        "copilotApi.showToken": {
+          "type": "boolean",
+          "default": false,
+          "description": "Log GitHub and Copilot tokens (debug only)."
+        },
+        "copilotApi.mcpEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable the embedded MCP server (localhost only)."
+        },
+        "copilotApi.mcpPort": {
+          "type": "number",
+          "default": 4142,
+          "minimum": 1,
+          "maximum": 65535,
+          "description": "MCP server port to listen on (localhost only)."
+        },
+        "copilotApi.mcpPath": {
+          "type": "string",
+          "default": "/mcp",
+          "description": "MCP HTTP path (Streamable HTTP endpoint)."
+        },
+        "copilotApi.mcpAskUserTimeoutMs": {
+          "type": "number",
+          "default": 600000,
+          "minimum": 1000,
+          "description": "Timeout (ms) for AskUserQuestion tool calls."
+        }
+      }
+    },
+    "views": {
+      "copilotApiViews": [
+        {
+          "icon": "media/icon.png",
+          "id": "copilotApi.mcpQuestions",
+          "name": "MCP Questions",
+          "type": "webview"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "copilotApiViews",
+          "title": "Copilot API",
+          "icon": "media/activitybar.svg"
+        }
+      ]
+    }
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.0",
+    "zod": "^4.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "@types/vscode": "^1.107.0",
+    "@vscode/vsce": "^3.3.1",
+    "electron": "^37.2.1",
+    "esbuild": "^0.24.0"
+  },
+  "engines": {
+    "vscode": "^1.107.0"
+  },
+  "icon": "media/icon.png",
+  "extensionKind": [
+    "workspace"
+  ]
+}

@@ -39,6 +39,23 @@ A reverse-engineered proxy for the GitHub Copilot API that exposes it as an Open
 - **Token Visibility**: Option to display GitHub and Copilot tokens during authentication and refresh for debugging (`--show-token`).
 - **Flexible Authentication**: Authenticate interactively or provide a GitHub token directly, suitable for CI/CD environments.
 - **Support for Different Account Types**: Works with individual, business, and enterprise GitHub Copilot plans.
+- **VS Code Extension + MCP AskUserQuestion UI**: The `vscode-extension/` package embeds the server inside VS Code and also hosts a local MCP server that exposes `AskUserQuestion`, with an HTML UI for answering queued questions.
+
+## VS Code Extension (Embedded) + MCP
+
+This repo includes a VS Code extension under `vscode-extension/` that can:
+
+- Start/stop the local Copilot API server from within VS Code
+- Start a local MCP server **after** the Copilot API server starts
+- Expose an MCP tool `AskUserQuestion` and let you answer via an HTML (webview) UI
+
+Defaults (configurable in VS Code Settings):
+
+- Copilot API: `http://localhost:4141`
+- MCP endpoint: `http://localhost:4142/mcp`
+- AskUserQuestion timeout: 10 minutes (`600000` ms)
+
+If the sidebar webview feels too narrow, use the command `Copilot API: Open MCP Questions (Editor)` to open the same UI in an editor tab.
 
 ## Demo
 
